@@ -35,7 +35,8 @@ def add_author():
             )
             db.session.add(author)
             db.session.commit()
-
+            return render_template('add_author.html', message="Added new author")
+        return render_template('add_author.html', error="Invalid input")
     return render_template('add_author.html')
 
 @app.route('/add_book', methods=['GET', 'POST'])
@@ -58,7 +59,7 @@ def add_book():
             db.session.add(book)
             db.session.commit()
             return render_template('add_book.html', message= f'Added {book.title}')
-        return render_template('add_book.html', message= 'Invalid input')
+        return render_template('add_book.html', error= 'Invalid input')
     return render_template('add_book.html')
 
 
