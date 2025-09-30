@@ -67,9 +67,9 @@ def add_book():
             )
             db.session.add(book)
             db.session.commit()
-            return render_template('add_book.html', message= f'Added {book.title}')
-        return render_template('add_book.html', error= 'Invalid input')
-    authors = Author.query.all()
+            return render_template('add_book.html',authors=authors, message= f'Added {book.title}')
+        return render_template('add_book.html',authors=authors,  error= 'Invalid input')
+
     return render_template('add_book.html', authors=authors)
 
 @app.route('/')
@@ -84,8 +84,8 @@ def home():
 
 
 
-with app.app_context(): #data created ✅
-  db.create_all()
+#with app.app_context(): #data created ✅
+  #db.create_all()
 
 
 
