@@ -41,27 +41,41 @@ def add_author():
 
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
+    authors = Author.query.all()
+
     if request.method == 'POST':
         title = request.form.get('title')
         isbn = request.form.get('isbn')
         publication_year = request.form.get('publication_year')
+        author_id = request.form.get('author_id')
+
+        if not author_id:
+            return render_template('add_book.html', authors=authors)
+
 
         try:
             publication_year = datetime.strptime(publication_year, "%Y-%m-%d").date() if publication_year else None
         except ValueError:
             return "Invalid publication year", 400
+
         if isbn and publication_year and title:
             book = Book(
                 title=title,
                 isbn=isbn,
-                publication_year=publication_year
+                publication_year=publication_year,
+                author_id=int(author_id)
             )
             db.session.add(book)
             db.session.commit()
             return render_template('add_book.html', message= f'Added {book.title}')
         return render_template('add_book.html', error= 'Invalid input')
-    return render_template('add_book.html')
+    authors = Author.query.all()
+    return render_template('add_book.html', authors=authors)
 
+@app.route('/')
+def home():
+    books = Book.query.all()
+    return render_template('home.html', books=books)
 
 
 

@@ -6,15 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
   </head>
   <body>
-  {% if message %}
-  <p style="color: green;">{{ message }}</p>
+    {% if message %}
+      <p style="color: green;">{{ message }}</p>
     {% endif %}
-  {% if error %}
-  <p style="color: red;">{{ error }}</p>
+    {% if error %}
+      <p style="color: red;">{{ error }}</p>
     {% endif %}
 
-  <form action="/add_book" method="POST">
-   <label for="title">Title:</label>
+    <form action="/add_book" method="POST">
+  <label for="title">Title:</label>
   <input type="text" id="title" name="title" required><br><br>
 
   <label for="isbn">ISB Number:</label>
@@ -22,8 +22,15 @@
 
   <label for="publication_year">Publication Year:</label>
   <input type="date" id="publication_year" name="publication_year"><br><br>
-  <input type="submit" value="Add Book">
-  </form>
 
+  <label for="author_id">Autor auswählen:</label>
+  <select name="author_id" id="author_id" required>
+    {% for author in authors %}
+      <option value="{{ author.id }}">{{ author.name }}</option>
+    {% endfor %}
+  </select><br><br>
+
+  <input type="submit" value="Add Book">
+</form>
   </body>
 </html>
