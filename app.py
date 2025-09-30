@@ -38,6 +38,35 @@ def add_author():
 
     return render_template('add_author.html')
 
+@app.route('/add_book', methods=['GET', 'POST'])
+def add_book():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        isbn = request.form.get('isbn')
+        publication_year = request.form.get('publication_year')
+
+        try:
+            publication_year = datetime.strptime(publication_year, "%Y-%m-%d").date() if publication_year else None
+        except ValueError:
+            return "Invalid publication year", 400
+        if isbn and publication_year and title:
+            book = Book(
+                title=title,
+                isbn=isbn,
+                publication_year=publication_year
+            )
+            db.session.add(book)
+            db.session.commit()
+            return render_template('add_book.html', message= f'Added {book.title}')
+        return render_template('add_book.html', message= 'Invalid input')
+    return render_template('add_book.html')
+
+
+
+
+
+
+
 
 
 with app.app_context(): #data created ✅
