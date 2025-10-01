@@ -7,6 +7,12 @@
   </head>
   <body>
   <form method="get" action="/">
+  <label for="search">🔎 Search:</label>
+  <input type="text" id="search" name="search" placeholder="search title" value="{{ request.args.get('search', '') }}">
+  <button type="submit">Suchen</button>
+</form>
+
+  <form method="get" action="/">
   <label for="sort_by">📍Sort by:</label>
   <select name="sort" id="sort_by" onchange="this.form.submit()">
     <option value="">-- Auswahl --</option>

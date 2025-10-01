@@ -79,19 +79,24 @@ def add_book():
 
 @app.route('/')
 def home():
-    books = Book.query.all()
     sort = request.args.get('sort')
-    if sort == 'title_asc':
-        books = Book.query.order_by(Book.title.asc()).all()
-    elif sort == 'title_desc':
-        books = Book.query.order_by(Book.title.desc()).all()
-    elif sort == 'author_asc':
-        books = Book.query.join(Author).order_by(Author.name.asc()).all()
-    elif sort == 'author_desc':
-        books = Book.query.join(Author).order_by(Author.name.desc()).all()
-    else:
-        books = Book.query.all()
+    search_term = request.args.get('search')
 
+    query = Book.query.join(Author)
+
+    if search_term:
+        query = query.filter(Book.title.ilike(f"%{search_term}%"))
+
+    if sort == 'title_asc':
+        query = query.order_by(Book.title.asc())
+    elif sort == 'title_desc':
+        query = query.order_by(Book.title.desc())
+    elif sort == 'author_asc':
+        query = query.order_by(Author.name.asc())
+    elif sort == 'author_desc':
+        query = query.order_by(Author.name.desc())
+
+    books = query.all()
     return render_template('home.html', books=books)
 
 
@@ -100,9 +105,8 @@ def home():
 
 
 
-
 #with app.app_context(): #data created ✅
- # db.create_all()
+  #db.create_all()
 
 
 
