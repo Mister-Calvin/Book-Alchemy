@@ -6,6 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
   </head>
   <body>
+  <form method="get" action="/">
+  <label for="sort_by">📍Sort by:</label>
+  <select name="sort" id="sort_by" onchange="this.form.submit()">
+    <option value="">-- Auswahl --</option>
+    <option value="title_asc">Title A-Z</option>
+    <option value="title_desc">Title Z-A</option>
+    <option value="author_asc">Author A-Z</option>
+    <option value="author_desc">Author Z-A</option>
+  </select>
+</form>
 
     {% for book in books %}
     <div> <h3>{{ book.title }}</h3>
