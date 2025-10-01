@@ -18,9 +18,15 @@
 </form>
 
     {% for book in books %}
-    <div> <h3>{{ book.title }}</h3>
-        <p><strong>Autor:</strong> {{ book.author.name }}</p>
-    </div>
+     <div>
+    <h3>{{ book.title }}</h3>
+    <p>Autor: {{ book.author.name }}</p>
+    {% if book.isbn %}
+      <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="Cover für {{ book.title }}">
+    {% else %}
+      <p>Kein Cover verfügbar</p>
+    {% endif %}
+  </div>
     {% endfor %}
 
   </body>
