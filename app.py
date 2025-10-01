@@ -129,10 +129,13 @@ def delete_book(book_id):
 
 
 
-
-#with app.app_context(): #data created ✅
-  #db.create_all()
-
+def initialize_database_if_missing():
+    db_path = os.path.join(basedir, 'data/libary.sqlite')
+    if not os.path.exists(db_path):
+        with app.app_context():
+            db.create_all()
+            print("Database created!")
+initialize_database_if_missing()
 
 
 
