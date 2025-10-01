@@ -105,11 +105,27 @@ def home():
 def delete_book(book_id):
     book = Book.query.get(book_id)
     if book:
-        db.session.query(Book).filter(Book.id == book_id).delete()
-        db.session.commit()
-        flash(f"'{book.title}' wurde erfolgreich gelöscht.")
-    return redirect('/')
+        # zuerst die author_id merken
+        author_id = book.author_id
 
+        # dann das Buch löschen
+        db.session.delete(book)
+        db.session.commit()
+
+        # Prüfen, ob der Autor noch Bücher hat
+        remaining_books = Book.query.filter_by(author_id=author_id).count()
+        if remaining_books == 0:
+            author = Author.query.get(author_id)
+            if author:
+                db.session.delete(author)
+                db.session.commit()
+                flash(
+                    f"'{book.title}' was deleted and the author '{author.name}' was also removed because no books remain.")
+            else:
+                flash(f"'{book.title}' was deleted.")
+        else:
+            flash(f"'{book.title}' was deleted.")
+    return redirect('/')
 
 
 
