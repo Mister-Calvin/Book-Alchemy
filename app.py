@@ -30,8 +30,7 @@ def add_author():
         existing_author = Author.query.filter_by(name=name).first()
         if existing_author:
 
-            return render_template('add_author.html', error="Autor existiert bereits", name=name,
-                                   birth_date=birth_date_str, date_of_death=date_of_death_str)
+            return render_template('add_author.html', error="Author already exists")
 
         elif name and birth_date:
             author = Author(
