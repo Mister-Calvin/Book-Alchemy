@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template, redirect, flash
-from flask_sqlalchemy import SQLAlchemy
 import os
 from data_models import db, Author, Book
 from datetime import datetime
@@ -7,11 +6,9 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'dein_geheimer_key'  # darf ein beliebiger String sein
-
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir, 'data/libary.sqlite')}"
 db.init_app(app)
-
 
 
 @app.route('/add_author', methods=['GET', 'POST'])
@@ -45,6 +42,7 @@ def add_author():
         return render_template('add_author.html', error="Invalid input")
     return render_template('add_author.html')
 
+
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
     authors = Author.query.all()
@@ -77,6 +75,7 @@ def add_book():
         return render_template('add_book.html',authors=authors,  error= 'Invalid input')
 
     return render_template('add_book.html', authors=authors)
+
 
 @app.route('/')
 def home():
@@ -128,7 +127,6 @@ def delete_book(book_id):
     return redirect('/')
 
 
-
 def initialize_database_if_missing():
     db_path = os.path.join(basedir, 'data/libary.sqlite')
     if not os.path.exists(db_path):
@@ -136,7 +134,6 @@ def initialize_database_if_missing():
             db.create_all()
             print("Database created!")
 initialize_database_if_missing()
-
 
 
 if __name__ == '__main__':
