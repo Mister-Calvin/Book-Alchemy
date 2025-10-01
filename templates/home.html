@@ -6,6 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
   </head>
   <body>
+
+   {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li style="color: green;">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
   <form method="get" action="/">
   <label for="search">🔎 Search:</label>
   <input type="text" id="search" name="search" placeholder="search title" value="{{ request.args.get('search', '') }}">
@@ -27,11 +38,15 @@
      <div>
     <h3>{{ book.title }}</h3>
     <p>Autor: {{ book.author.name }}</p>
+         <form action="/book/{{ book.id }}/delete" method="post" style="display: inline;">
+  <button type="submit" onclick="return confirm('Do you really want to delete this Book?')">🗑️ Entfernen</button>
+</form>
     {% if book.isbn %}
       <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="Cover für {{ book.title }}">
     {% else %}
       <p>Kein Cover verfügbar</p>
     {% endif %}
+
   </div>
     {% endfor %}
 

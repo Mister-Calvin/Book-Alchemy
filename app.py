@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 import os
 from data_models import db, Author, Book
@@ -6,6 +6,7 @@ from datetime import datetime
 
 
 app = Flask(__name__)
+app.secret_key = 'dein_geheimer_key'  # darf ein beliebiger String sein
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir, 'data/libary.sqlite')}"
@@ -100,6 +101,14 @@ def home():
     return render_template('home.html', books=books)
 
 
+@app.route('/book/<int:book_id>/delete', methods=['POST'])
+def delete_book(book_id):
+    book = Book.query.get(book_id)
+    if book:
+        db.session.query(Book).filter(Book.id == book_id).delete()
+        db.session.commit()
+        flash(f"'{book.title}' wurde erfolgreich gelöscht.")
+    return redirect('/')
 
 
 
