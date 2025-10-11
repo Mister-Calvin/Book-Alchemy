@@ -82,15 +82,37 @@ def add_book():
             return "Invalid publication year", 400
 
         if isbn and publication_year and title:
+            # ISBN format check
+            if not isbn.isdigit() or len(isbn) not in [10, 13]:
+                return render_template('add_book.html', authors=authors,
+                                       error="Invalid ISBN format (must be 10 or 13 digits)")
+
+            # Check if ISBN already exists
+            existing_isbn = Book.query.filter_by(isbn=isbn).first()
+            if existing_isbn:
+                return render_template('add_book.html', authors=authors, error="ISBN already exists in the database")
+
+            # Check if the same author already has a book with this title
+            existing_title = Book.query.filter_by(title=title, author_id=author_id).first()
+            if existing_title:
+                return render_template('add_book.html', authors=authors,
+                                       error="This author already has a book with this title")
+
             book = Book(
                 title=title,
                 isbn=isbn,
                 publication_year=publication_year,
                 author_id=int(author_id)
             )
-            db.session.add(book)
-            db.session.commit()
-            return render_template('add_book.html',authors=authors, message= f'Added {book.title}')
+
+            try:
+                db.session.add(book)
+                db.session.commit()
+                return render_template('add_book.html', authors=authors, message=f"Added {book.title}")
+            except Exception as e:
+                db.session.rollback()
+                return render_template('add_book.html', authors=authors, error=f"Database error: {e}")
+
         return render_template('add_book.html',authors=authors,  error= 'Invalid input')
 
     return render_template('add_book.html', authors=authors)
