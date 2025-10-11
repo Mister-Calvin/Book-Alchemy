@@ -1,0 +1,173 @@
+/* === Book Alchemy: Zentrierte, farbenfrohe Fantasy-Welt === */
+/* Motto: Eine lebendige Bücherwelt zwischen Abenteurern & Fantasie */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Quicksand:wght@400;600&display=swap');
+
+body {
+  background: linear-gradient(135deg, #f9f3e7, #ffe6f7, #e7f7ff, #e8ffe7);
+  background-size: 600% 600%;
+  animation: bgMove 20s ease infinite;
+  font-family: 'Quicksand', sans-serif;
+  color: #2e2e2e;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Sanft bewegter Hintergrund */
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+h1, h2, h3 {
+  font-family: 'Cinzel Decorative', cursive;
+  color: #4a148c;
+  text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.6);
+  margin-bottom: 10px;
+}
+
+header {
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+/* Magisch schimmernde Buttons */
+button, .btn {
+  background: linear-gradient(45deg, #ff4081, #7c4dff, #00bcd4);
+  background-size: 300%;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  margin: 5px;
+}
+
+button:hover, .btn:hover {
+  background-position: right center;
+  transform: scale(1.07);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+/* Karten für Bücher */
+div.book-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+div.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Suchfeld und Sortierung */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0 20px;
+}
+
+input[type="text"], select {
+  border-radius: 8px;
+  border: 2px solid #7c4dff;
+  padding: 8px 12px;
+  margin: 8px 0;
+  background-color: #fafafa;
+  width: 250px;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+input[type="text"]:focus, select:focus {
+  border-color: #ff4081;
+  box-shadow: 0 0 8px #ff80ab;
+  outline: none;
+}
+
+/* Flash-Nachrichten */
+ul {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+li {
+  background: linear-gradient(90deg, #81d4fa, #b39ddb);
+  color: white;
+  margin: 5px auto;
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  display: inline-block;
+}
+
+/* Buchcover */
+img {
+  border-radius: 10px;
+  margin-top: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+img:hover {
+  transform: scale(1.08) rotate(-2deg);
+}
+
+/* Buttons-Container */
+div[style*="margin-bottom: 20px"] {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px !important;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: #7b1fa2;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #ff4081;
+  text-shadow: 0 0 5px #ff80ab;
+}
+
+/* Fußzeile */
+footer {
+  margin-top: 40px;
+  background: linear-gradient(90deg, #84fab0, #8fd3f4);
+  padding: 10px;
+  color: #333;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  input[type="text"], select {
+    width: 90%;
+  }
+  button {
+    width: 100%;
+  }
+  div.book-card {
+    width: 90%;
+  }
+}
