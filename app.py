@@ -13,6 +13,17 @@ db.init_app(app)
 
 @app.route('/add_author', methods=['GET', 'POST'])
 def add_author():
+    """Handles adding a new author to the database.
+
+        Validates input fields for logical date order and ensures that
+        the author does not already exist. Converts date strings to
+        Python date objects, checks for invalid or future dates, and
+        provides appropriate error messages for invalid input or
+        database errors.
+
+        Returns:
+            Rendered HTML template (add_author.html) with success or
+            error messages."""
     if request.method == 'POST':
         name = request.form.get('name')
         birth_date_str = request.form.get('birth_date')
@@ -64,6 +75,16 @@ def add_author():
 
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
+    """Handles adding a new book to the database.
+
+        Validates ISBN format (10 or 13 digits), prevents duplicate
+        ISBNs, and ensures that the same author does not have duplicate
+        book titles. Includes error handling for invalid input and
+        database exceptions.
+
+        Returns:
+            Rendered HTML template (add_book.html) with success or
+            error messages and list of authors. """
     authors = Author.query.all()
 
     if request.method == 'POST':
@@ -120,6 +141,15 @@ def add_book():
 
 @app.route('/')
 def home():
+    """Displays the main home page with a list of all books.
+
+       Allows sorting by title or author (ascending/descending) and
+       filtering via a search term. Joins Author and Book tables for
+       combined display.
+
+       Returns:
+           Rendered HTML template (home.html) showing filtered and/or
+           sorted book data."""
     sort = request.args.get('sort')
     search_term = request.args.get('search')
 
@@ -143,6 +173,17 @@ def home():
 
 @app.route('/book/<int:book_id>/delete', methods=['POST'])
 def delete_book(book_id):
+    """Deletes a book entry from the database.
+
+       Deletes the book by its ID and removes the associated author
+       if they no longer have any remaining books. Displays status
+       messages via Flask's flash system.
+
+       Args:
+           book_id (int): The ID of the book to delete.
+
+       Returns:
+           Redirect to the home page after deletion."""
     book = Book.query.get(book_id)
     if book:
         # zuerst die author_id merken
@@ -169,6 +210,11 @@ def delete_book(book_id):
 
 
 def initialize_database_if_missing():
+    """Initializes the SQLite database if it does not exist.
+
+        Checks for the existence of the database file and creates
+        all required tables if missing. Logs a message when the
+        database is newly created."""
     db_path = os.path.join(basedir, 'data/libary.sqlite')
     if not os.path.exists(db_path):
         with app.app_context():
