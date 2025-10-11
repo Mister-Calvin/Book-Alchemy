@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, flash
 import os
 from data_models import db, Author, Book
-from datetime import datetime
+from datetime import datetime, date
 
 
 app = Flask(__name__)
@@ -22,6 +22,18 @@ def add_author():
         try:
             birth_date = datetime.strptime(birth_date_str, "%Y-%m-%d").date() if birth_date_str else None
             date_of_death = datetime.strptime(date_of_death_str, "%Y-%m-%d").date() if date_of_death_str else None
+
+            today = date.today()
+
+            if birth_date and birth_date > today:
+                return render_template('add_author.html', error="Birth date cannot be in the future")
+
+            if date_of_death and date_of_death > today:
+                return render_template('add_author.html', error="Date of death cannot be in the future")
+
+            if date_of_death and birth_date and date_of_death < birth_date:
+                return render_template('add_author.html', error="Date of death cannot be before birth date")
+
         except ValueError:
             return "Invalid date format", 400
 
@@ -36,10 +48,17 @@ def add_author():
                 birth_date=birth_date,
                 date_of_death=date_of_death
             )
-            db.session.add(author)
-            db.session.commit()
-            return render_template('add_author.html', message="Added new author")
+
+            try:
+                db.session.add(author)
+                db.session.commit()
+                return render_template('add_author.html', message="Added new author")
+            except Exception as e:
+                db.session.rollback()
+                return render_template('add_author.html', error=f"Database error: {e}")
+
         return render_template('add_author.html', error="Invalid input")
+
     return render_template('add_author.html')
 
 
